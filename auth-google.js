@@ -1,77 +1,45 @@
-// auth-google.js
-// Логіка Google OAuth + надсилання даних у n8n → Google Sheets
+/* auth-google.js */
+// Google OAuth 2.0 для вашого сайту
 
-// ------------------------
-// CONFIG
-// ------------------------
-const GOOGLE_CLIENT_ID = "225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com";
-const N8N_WEBHOOK_URL = "https://narodocnt.online:5678/webhook/google-signup";
+const GOOGLE_CLIENT_ID = '225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com';
+const N8N_WEBHOOK = 'https://narodocnt.online:5678/webhook/google-signup';
 
-// ------------------------
-// Відкрити Google OAuth для входу
-// ------------------------
-function loginWithGoogle() {
-    const redirectUri = `${window.location.origin}/oauth2callback.html`;
-
-    const oauthUrl = 
-        "https://accounts.google.com/o/oauth2/v2/auth" +
-        `?client_id=${GOOGLE_CLIENT_ID}` +
-        `&redirect_uri=${redirectUri}` +
-        "&response_type=token" +
-        "&scope=email profile" +
-        "&include_granted_scopes=true";
-
-    window.location.href = oauthUrl;
+// Функція для початку входу через Google
+function startGoogleSignIn() {
+  const redirectUri = 'https://narodocnt.online/oauth2callback'; // має точно збігатися з Google Cloud
+  const scope = encodeURIComponent('openid email profile');
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}&prompt=select_account`;
+  window.location.href = url;
 }
 
-// ------------------------
-// Отримання даних користувача з Google
-// ------------------------
-async function getGoogleUserInfo(accessToken) {
-    const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-        headers: { Authorization: `Bearer ${accessToken}` }
-    });
-    return await response.json();
-}
+// Обробка Google redirect
+async function handleGoogleRedirect() {
+  const hash = window.location.hash.substr(1); // отримуємо все після #
+  const params = new URLSearchParams(hash);
+  const token = params.get('access_token');
 
-// ------------------------
-// Надсилання даних користувача у n8n
-// ------------------------
-async function sendUserToN8N(user) {
+  if (token) {
+    console.log('Google Access Token:', token);
+
+    // Надсилаємо токен на n8n для обробки
     try {
-        await fetch(N8N_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        });
-        console.log("User sent to n8n:", user);
+      await fetch(N8N_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'google', access_token: token, ts: new Date().toISOString() })
+      });
+      alert('Вхід через Google успішний! Дані відправлено на сервер.');
     } catch (err) {
-        console.error("Error sending to n8n:", err);
+      console.error('Помилка відправки на n8n:', err);
+      alert('Помилка відправки даних на сервер.');
     }
+
+    // Очищаємо URL
+    window.history.replaceState(null, '', window.location.pathname);
+  }
 }
 
-// ------------------------
-// Обробка redirect після Google OAuth
-// ------------------------
-async function handleOAuthRedirect() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get("access_token");
-
-    if (!accessToken) {
-        document.body.innerHTML = "<h3>Не вдалося авторизуватися</h3>";
-        return;
-    }
-
-    const user = await getGoogleUserInfo(accessToken);
-
-    await sendUserToN8N({
-        email: user.email,
-        name: user.name,
-        picture: user.picture,
-        login_time: new Date().toISOString()
-    });
-
-    // Повернення на головну сторінку після входу
-    window.location.href = "/";
+// Якщо ми на сторінці oauth2callback — обробляємо redirect
+if (window.location.pathname === '/oauth2callback') {
+  handleGoogleRedirect();
 }
