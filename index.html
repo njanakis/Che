@@ -9,68 +9,17 @@
 <meta http-equiv="Permissions-Policy" content="identity-credentials-get=(self 'https://accounts.google.com')">
 
 <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 0; background: #f0f2f5; color: #333;
-}
-
-header {
-    background: #8b0000;
-    color: white;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
+/* стилі залишаються без змін */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f0f2f5; color: #333; }
+header { background: #8b0000; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 header h1 { margin: 0; font-size: 24px; }
 header h3 a { color: #ffcc00; text-decoration: none; font-size: 16px; display: block; }
 header h3 a:hover { text-decoration: underline; }
-
-.header-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.header-buttons button {
-    padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
-}
-.login-btn { background: #007bff; color: white; }
-.register-btn { background: #28a745; color: white; }
-
-/* Навігація */
-nav { 
-    background: #b30000; padding: 12px 0; display: flex; justify-content: center; gap: 30px;
-    position: sticky; top: 0; z-index: 1000;
-}
+nav { background: #b30000; padding: 12px 0; display: flex; justify-content: center; gap: 30px; position: sticky; top: 0; z-index: 1000; }
 nav a { color: white; text-decoration: none; font-weight: 600; padding: 8px 15px; border-radius: 4px; transition: 0.3s; }
 nav a:hover { background-color: #d60000; }
-
-/* Основний контент */
 .container { max-width: 1000px; margin: 30px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 .section-title { font-size: 32px; margin-bottom: 20px; color: #8b0000; border-bottom: 3px solid #ffcc00; padding-bottom: 5px; display: inline-block; }
-
-/* Модальні вікна */
-.modal-bg {
-    display: none;
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;
-}
-.modal {
-    background: #fff; padding: 24px; border-radius: 10px; width: 360px; max-width: 90%;
-    box-shadow: 0 6px 24px rgba(0,0,0,.3); position: relative;
-}
-.modal h2 { margin-top: 0; }
-.modal .close {
-    position: absolute; top: 12px; right: 12px; cursor: pointer; font-weight: bold; font-size: 18px;
-}
-.modal input, .modal button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccd; }
-.modal button { background: #007bff; color: white; border: none; cursor: pointer; }
-.divider { text-align:center; margin:12px 0; color:#666; }
-.note { font-size: 13px; color:#666; margin-top: 8px; }
-.hidden { display:none; }
-.error { color:#b00; font-weight:600; }
 footer { background:#b30000; color:white; text-align:center; padding:20px; margin-top:40px; font-size:14px; }
 </style>
 </head>
@@ -80,10 +29,6 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
     <div>
         <h1>Відділ народної творчості</h1>
         <h3><a href="https://www.facebook.com/narodocntcherkasy/" target="_blank">Обласний Центр Народної Творчості</a></h3>
-    </div>
-    <div class="header-buttons">
-        <button class="login-btn" onclick="openModal('loginModal')">Увійти через Google</button>
-        <button class="register-btn" onclick="openModal('registerModal')">Зареєструватися</button>
     </div>
 </header>
 
@@ -97,7 +42,7 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
 
 <div class="container" id="about">
     <h2 class="section-title">Про нас</h2>
-    <p>Відділ народної творчості займається розвитком та підтримкою творчих колективів області, організацією фестивалів, семінарів, оглядів та популяризацією української культури.</p>
+    <p>Відділ народної творчості займається розвитком та підтримкою творчих колективів області...</p>
 </div>
 
 <div class="container" id="collectives">
@@ -115,7 +60,7 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
 
 <div class="container" id="events">
     <h2 class="section-title">Події та новини</h2>
-    <p>Оголошення, конкурси, фестивалі, семінари — все важливе в одному місці.</p>
+    <p>Оголошення, конкурси, фестивалі, семінари...</p>
 </div>
 
 <div class="container" id="contacts">
@@ -129,67 +74,11 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
     © 2025 Відділ народної творчості ОЦНТ
 </footer>
 
-<!-- Модальне вікно для реєстрації -->
-<div id="registerModal" class="modal-bg">
-    <div class="modal">
-        <span class="close" onclick="closeModal('registerModal')">&times;</span>
-        <h2>Реєстрація</h2>
-        <form id="manualForm">
-            <input id="lastname" type="text" placeholder="Прізвище" required>
-            <input id="firstname" type="text" placeholder="Ім'я" required>
-            <input id="email" type="email" placeholder="Електронна пошта" required>
-            <button type="submit">Зареєструватися</button>
-        </form>
-    </div>
-</div>
+<!-- Контейнер для автоматичного завантаження модалок / кнопок з login-system.js -->
+<div id="login-container"></div>
 
-<!-- Модальне вікно для Google Login -->
-<div id="loginModal" class="modal-bg">
-    <div class="modal">
-        <span class="close" onclick="closeModal('loginModal')">&times;</span>
-        <h2>Увійти через Google</h2>
-        <div id="g_id_onload"
-             data-client_id="225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com"
-             data-auto_prompt="false"
-             data-context="signin"
-             data-ux_mode="popup"
-             data-callback="handleGoogleLogin"></div>
-        <div class="g_id_signin" data-type="standard"></div>
-        <div id="gsi-error" class="note error hidden"></div>
-        <div id="result" class="note hidden"></div>
-    </div>
-</div>
-
-<script>
-// --- Модальні вікна
-function openModal(id){ document.getElementById(id).style.display = 'flex'; }
-function closeModal(id){ document.getElementById(id).style.display = 'none'; }
-
-// --- Реєстрація
-document.getElementById('manualForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const data = {
-        lastname: document.getElementById('lastname').value.trim(),
-        firstname: document.getElementById('firstname').value.trim(),
-        email: document.getElementById('email').value.trim()
-    };
-    alert('Зареєстровано (локально): ' + JSON.stringify(data));
-    closeModal('registerModal');
-});
-
-// --- Google Identity callback
-function handleGoogleLogin(response){
-    try{
-        if(!response || !response.credential) throw new Error('No credential');
-        console.log('GSI credential (ID token):', response.credential);
-        alert('Успішний вхід через Google. Перевірте консоль для ID token.');
-        closeModal('loginModal');
-    }catch(err){
-        console.error('GSI callback error', err);
-        alert('Помилка обробки Google identity: ' + err.message);
-    }
-}
-</script>
+<!-- Підключення зовнішньої системи логіну -->
+<script src="login-system.js"></script>
 
 </body>
 </html>
