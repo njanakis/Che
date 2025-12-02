@@ -46,7 +46,7 @@ window.location.href = authUrl;
 
 // Обробка редіректу після входу
 async function handleGoogleRedirect() {
-    handleGoogleRedirect();
+   // handleGoogleRedirect();
 const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get("code");
 if (!code) return;
