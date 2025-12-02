@@ -90,6 +90,6 @@ async function handleGoogleRedirect() {
     window.history.replaceState({}, document.title, "/");
 }
 
-if (window.location.pathname === "/oauth2callback") {
+if (window.location.pathname === "/oauth2callback.html") {
     handleGoogleRedirect();
 }
