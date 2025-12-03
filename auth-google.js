@@ -40,7 +40,7 @@ async function startGoogleSignIn() {
         "&prompt=select_account";
 
     //window.location.href = authUrl;
-    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=...`
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${"225496350184-2v39q3dt1p9k22g52q6ko4vqri7h7tqr.apps.googleusercontent.com"}&redirect_uri=...`
 
 }
 
