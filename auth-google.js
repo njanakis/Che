@@ -1,28 +1,35 @@
-/* auth-google.js — PKCE для GitHub Pages + n8n */
-
 const GOOGLE_CLIENT_ID = "225496350184-2v39q3dt1p9k22g52q6ko4vqri7h7tqr.apps.googleusercontent.com";
-const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html"; 
-const N8N_WEBHOOK = "https://narodocnt.online/api/google-signup";  // через NGINX проксі
+const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html";
+const N8N_WEBHOOK = "https://narodocnt.online/api/google-signup"; 
 
-
-// Генерація випадкового рядка
+// ----------------------------
+// Правильний randomString()
+// ----------------------------
 function randomString(length = 64) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~';
     let result = '';
-    for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.charAt(Math.floor(Math.random() * chars.length))));
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
     return result;
 }
 
+// ----------------------------
 // SHA256 для PKCE
+// ----------------------------
 async function sha256(plain) {
     const encoder = new TextEncoder();
     const data = encoder.encode(plain);
     const hash = await crypto.subtle.digest("SHA-256", data);
     return btoa(String.fromCharCode(...new Uint8Array(hash)))
-        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
 }
 
-// Початок Google OAuth
+// ----------------------------
+// Старт Google OAuth
+// ----------------------------
 async function startGoogleSignIn() {
     const codeVerifier = randomString();
     const codeChallenge = await sha256(codeVerifier);
@@ -42,7 +49,9 @@ async function startGoogleSignIn() {
     window.location.href = authUrl;
 }
 
-// Обробка редіректу після входу
+// ----------------------------
+// Обробка редіректу Google
+// ----------------------------
 async function handleGoogleRedirect() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
@@ -67,12 +76,12 @@ async function handleGoogleRedirect() {
 
     if (tokenData.error) {
         alert("Помилка Google OAuth: " + tokenData.error_description);
+        console.error(tokenData);
         return;
     }
 
     const idToken = tokenData.id_token;
 
-    // Відправка у n8n
     await fetch(N8N_WEBHOOK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,11 +93,9 @@ async function handleGoogleRedirect() {
     });
 
     alert("Вхід через Google успішний!");
-
     window.history.replaceState({}, document.title, "/");
 }
 
-// Автоматична обробка редіректу
 if (window.location.pathname === "/oauth2callback.html") {
     handleGoogleRedirect();
 }
