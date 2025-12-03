@@ -10,7 +10,7 @@
 const GOOGLE_CLIENT_ID = "225496350184-2v39q3dt1p9k22g52q6ko4vqri7h7tqr.apps.googleusercontent.com";
 
 // n8n webhook URL (PUT YOURS HERE!)
-const N8N_WEBHOOK = "https://n8n.yourdomain.com/webhook/login"; // <--- replace
+const N8N_WEBHOOK = "https://n8n.narodocnt.online/webhook/login"; // <--- replace
 
 // Facebook App ID (REPLACE!)
 const FB_APP_ID = "YOUR_FACEBOOK_APP_ID";
