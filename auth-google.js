@@ -39,7 +39,9 @@ async function startGoogleSignIn() {
         "&code_challenge_method=S256" +
         "&prompt=select_account";
 
-    window.location.href = authUrl;
+    //window.location.href = authUrl;
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=...`
+
 }
 
 // Обробка редіректу після входу
