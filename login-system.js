@@ -1,7 +1,7 @@
 /* login-system.js — сучасна система логіну з Google/Facebook + n8n */
 
 const N8N_WEBHOOK = '[https://narodocnt.online/api/register](https://narodocnt.online/api/register)'; // твій n8n webhook
-const GOOGLE_CLIENT_ID = "225496350184-2v39q3dt1p9k22g52q6ko4vqri7h7tqr.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "734541752522-1rkn3nt7bifjiaekbkcushi9o707tmdp.apps.googleusercontent.com";
 const FB_APP_ID = 'YOUR_FB_APP_ID'; // заміни на свій Facebook App ID
 
 let dropdownTimeout;
