@@ -1,5 +1,5 @@
 // login.js
-const CLIENT_ID = "ТВОЇ_GOOGLE_CLIENT_ID"; // встав свій Client ID
+const CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com"; // встав свій Client ID
 const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html"; // твій callback
 
 document.addEventListener("DOMContentLoaded", () => {
